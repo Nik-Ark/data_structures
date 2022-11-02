@@ -2,6 +2,7 @@
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar"
+      "lib/**/*.jar",
+      "/home/nikki/java_libs/junit-platform-console-standalone-1.9.1.jar"
     ]
 }

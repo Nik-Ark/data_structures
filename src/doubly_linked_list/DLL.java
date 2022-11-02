@@ -194,7 +194,7 @@ public class DLL<E extends Comparable<? super E>> extends AbstractList<E> {
     return resStr;
   }
 
-  public void myMergeSort() {
+  public void mergeSort() {
     if (head == null || head.next == null)
       return;
 
@@ -283,7 +283,7 @@ public class DLL<E extends Comparable<? super E>> extends AbstractList<E> {
   }
 
   /**
-   * Tests for MyMergeSorting and Reversing on MyLists algorithm.
+   * Tests for my MergeSorting and Reversing DLL algorithm.
    * 
    * @param args
    * 
@@ -306,7 +306,7 @@ public class DLL<E extends Comparable<? super E>> extends AbstractList<E> {
     }
 
     Collections.sort(originLL);
-    myLL.myMergeSort();
+    myLL.mergeSort();
 
     System.out.println("After Sorting:");
     for (int i = 0; i < 21; i++) {
