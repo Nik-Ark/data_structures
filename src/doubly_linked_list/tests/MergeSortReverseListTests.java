@@ -27,11 +27,8 @@ public class MergeSortReverseListTests {
   LinkedList<String> originStrLL;
   DLL<String> myStrLL;
 
-  /**
-   * @throws java.lang.Exception
-   */
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
 
     Random rand = new Random();
     Integer[] numbers = new Integer[LIST_LENGTH_FOR_SORTING_TEST];
