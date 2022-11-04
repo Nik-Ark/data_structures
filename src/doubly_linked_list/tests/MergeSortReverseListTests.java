@@ -10,7 +10,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
-import doubly_linked_list.DLL;
+import doubly_linked_list.MyDLL;
 
 /**
  * @author Nikki
@@ -23,9 +23,9 @@ public class MergeSortReverseListTests {
   private static final int LIST_LENGTH_FOR_SORTING_TEST = 21;
 
   LinkedList<Integer> originIntLL;
-  DLL<Integer> myIntLL;
+  MyDLL<Integer> myIntLL;
   LinkedList<String> originStrLL;
-  DLL<String> myStrLL;
+  MyDLL<String> myStrLL;
 
   @Before
   public void setUp() {
@@ -41,10 +41,10 @@ public class MergeSortReverseListTests {
     }
 
     originIntLL = new LinkedList<>(Arrays.asList(numbers));
-    myIntLL = new DLL<>(numbers);
+    myIntLL = new MyDLL<>(numbers);
 
     originStrLL = new LinkedList<>(Arrays.asList(words));
-    myStrLL = new DLL<>(words);
+    myStrLL = new MyDLL<>(words);
 
   }
 

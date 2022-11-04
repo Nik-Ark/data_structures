@@ -13,18 +13,18 @@ import java.util.Collections;
  *
  * @param <E> The type of the elements stored in the list
  */
-public class DLL<E extends Comparable<? super E>> extends AbstractList<E> {
+public class MyDLL<E extends Comparable<? super E>> extends AbstractList<E> {
   private LLNode<E> head;
   private LLNode<E> tail;
   private int size;
 
-  public DLL() {
+  public MyDLL() {
     head = null;
     tail = null;
     size = 0;
   }
 
-  public DLL(E[] array) {
+  public MyDLL(E[] array) {
     this();
 
     for (int i = 0; i < array.length; i++) {
@@ -283,7 +283,7 @@ public class DLL<E extends Comparable<? super E>> extends AbstractList<E> {
   }
 
   /**
-   * Tests for my MergeSorting and Reversing DLL algorithm.
+   * Tests for my MergeSort and Revers MyDLL algorithm.
    * 
    * @param args
    * 
@@ -298,7 +298,7 @@ public class DLL<E extends Comparable<? super E>> extends AbstractList<E> {
     }
 
     LinkedList<Integer> originLL = new LinkedList<>(Arrays.asList(numbers));
-    DLL<Integer> myLL = new DLL<>(numbers);
+    MyDLL<Integer> myLL = new MyDLL<>(numbers);
 
     System.out.println("Before Sorting:");
     for (int i = 0; i < 21; i++) {
