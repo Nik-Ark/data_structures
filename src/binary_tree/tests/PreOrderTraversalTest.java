@@ -14,15 +14,19 @@ public class PreOrderTraversalTest {
 
   private static MyBinaryTree<String> bst_str;
   private static MyBinaryTree<Integer> bst_int;
+  private static MyBinaryTree<Integer> bst_empty;
 
   @Before
   public void setUp() {
     bst_str = new MyBinaryTree<>(strArr);
     bst_int = new MyBinaryTree<>(intArr);
+    bst_empty = new MyBinaryTree<>();
   }
 
   @Test
   public void testPreOrderTraversal() {
+
+    assertTrue(bst_empty.preOrder() != null);
 
     MyDLL<String> bst_str_preOrder = bst_str.preOrder();
     for (int i = 0; i < strPreOrderSample.length; i++) {

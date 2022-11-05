@@ -14,15 +14,19 @@ public class LevelOrderTraversalTest {
 
   private static MyBinaryTree<String> bst_str;
   private static MyBinaryTree<Integer> bst_int;
+  private static MyBinaryTree<Integer> bst_empty;
 
   @Before
   public void setUp() {
     bst_str = new MyBinaryTree<>(strArr);
     bst_int = new MyBinaryTree<>(intArr);
+    bst_empty = new MyBinaryTree<>();
   }
 
   @Test
   public void testLevelOrderTraversal() {
+
+    assertTrue(bst_empty.levelOrder() != null);
 
     MyDLL<String> bst_str_levelOrder = bst_str.levelOrder();
     for (int i = 0; i < strLevelOrderSample.length; i++) {

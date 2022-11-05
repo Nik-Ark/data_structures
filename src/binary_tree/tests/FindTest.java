@@ -17,11 +17,8 @@ public class FindTest {
   private static MyBinaryTree<String> bst_str_empty;
   private static MyBinaryTree<Integer> bst_int_empty;
 
-  /**
-   * @throws java.lang.Exception
-   */
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     bst_str = new MyBinaryTree<>(strArr);
     bst_int = new MyBinaryTree<>(intArr);
     bst_str_empty = new MyBinaryTree<>();

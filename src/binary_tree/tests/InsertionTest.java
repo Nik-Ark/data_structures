@@ -18,11 +18,8 @@ public class InsertionTest {
   private static MyBinaryTree<Integer> bst_int;
   private static MyBinaryTree<Integer> bst_int_fromArr;
 
-  /**
-   * @throws java.lang.Exception
-   */
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     bst_str = new MyBinaryTree<>();
     bst_int = new MyBinaryTree<>();
     bst_str_fromArr = new MyBinaryTree<>(strArr);

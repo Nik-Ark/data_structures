@@ -6,6 +6,8 @@ import java.util.Random;
 import java.util.Arrays;
 import java.util.Collections;
 
+// TODO: Add JUnit Tests for size() and remove()
+
 /**
  * A class that implements a doubly linked list
  * 
@@ -62,7 +64,7 @@ public class MyDLL<E extends Comparable<? super E>> extends AbstractList<E> {
    * @throws IndexOutOfBoundsException if the index is out of bounds.
    */
   public E get(int index) {
-    if (index < 0 || index >= size)
+    if (index < 0 | index >= size)
       throw new IndexOutOfBoundsException();
 
     int i = 0;
@@ -88,7 +90,7 @@ public class MyDLL<E extends Comparable<? super E>> extends AbstractList<E> {
   public void add(int index, E element) {
     if (element == null)
       throw new NullPointerException();
-    if (index > size || index < 0)
+    if (index > size | index < 0)
       throw new IndexOutOfBoundsException();
 
     LLNode<E> tmp = head;
@@ -134,7 +136,7 @@ public class MyDLL<E extends Comparable<? super E>> extends AbstractList<E> {
    * 
    */
   public E remove(int index) {
-    if (index < 0 || index >= size)
+    if (index < 0 | index >= size)
       throw new IndexOutOfBoundsException();
 
     int i = 0;
@@ -195,7 +197,7 @@ public class MyDLL<E extends Comparable<? super E>> extends AbstractList<E> {
   }
 
   public void mergeSort() {
-    if (head == null || head.next == null)
+    if (head == null | head.next == null)
       return;
 
     LLNode<E> tmp;
@@ -265,7 +267,7 @@ public class MyDLL<E extends Comparable<? super E>> extends AbstractList<E> {
    * My reverse list algorithm
    */
   public void reverse() {
-    if (head == null || head.next == null)
+    if (head == null | head.next == null)
       return;
 
     LLNode<E> tmp = tail;

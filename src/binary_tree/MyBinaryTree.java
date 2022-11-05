@@ -41,7 +41,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
    */
   public MyDLL<E> inOrder() {
     if (this.root == null)
-      return null;
+      return new MyDLL<>();
     MyDLL<E> traverseList = new MyDLL<>();
     this.inOrder(this.root, traverseList);
     return traverseList;
@@ -69,7 +69,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
    */
   public MyDLL<E> preOrder() {
     if (this.root == null)
-      return null;
+      return new MyDLL<>();
     MyDLL<E> traverseList = new MyDLL<>();
     this.preOrder(this.root, traverseList);
     return traverseList;
@@ -97,7 +97,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
    */
   public MyDLL<E> postOrder() {
     if (this.root == null)
-      return null;
+      return new MyDLL<>();
     MyDLL<E> traverseList = new MyDLL<>();
     this.postOrder(this.root, traverseList);
     return traverseList;
@@ -125,7 +125,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
    */
   public MyDLL<E> levelOrder() {
     if (this.root == null)
-      return null;
+      return new MyDLL<>();
 
     Queue<TreeNode<E>> queue = new LinkedList<>();
     queue.add(this.root);
@@ -146,20 +146,18 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
   }
 
   /**
-   * Helper method for finding first Level Order Child of BST's Node which has TWO
-   * CHILDREN!
+   * Helper method for finding first InOrder Successor of a given Node,
+   * which has TWO CHILDREN!
    * 
    * @param node from which searching starts
-   * @return First node's Level Order Child
-   * @throws NullPointerException if given node isn't parent of two children.
+   * @return Given node's first InOrder successor
+   * @throws IllegalArgumentException if given node isn't parent of two children.
    */
   private TreeNode<E> getInOrderFirstChild(TreeNode<E> node) {
-    // TODO: Change NullPointerException on Meaningfull exception for this case
-    // because it is logical mistake, not an error.
-    if (node.getLeftChild() == null || node.getRightChild() == null)
-      throw new NullPointerException();
+    if (node.getLeftChild() == null | node.getRightChild() == null)
+      throw new IllegalArgumentException();
     TreeNode<E> curr = node.getRightChild();
-    TreeNode<E> prev = null;
+    TreeNode<E> prev = null; // Curr is never null in the first itteration, so prev can be init as null
     while (curr != null) {
       prev = curr;
       curr = curr.getLeftChild();
@@ -201,7 +199,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
       else
         return curr;
     }
-    return null;
+    return null; // It is internal method, caller will check if return is null
   }
 
   /**
@@ -219,10 +217,9 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
       return true;
     }
 
-    TreeNode<E> curr = this.root;
-    TreeNode<E> prev = null;
+    TreeNode<E> curr = this.root; // at this point root is never null
+    TreeNode<E> prev = null; // at least one iteration occurs, so prev won't be null
     int comparedValue = 0;
-
     while (curr != null) {
       prev = curr;
       comparedValue = value.compareTo(curr.visit());
@@ -233,12 +230,10 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
       else
         return false;
     }
-
     if (comparedValue < 0)
       prev.addLeftChild(value);
     else
       prev.addRightChild(value);
-
     this.size++;
     return true;
   }
@@ -274,7 +269,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
 
     if (leftChild == null && rightChild == null) {
       delLeafNode(nodeToRemove);
-    } else if (leftChild == null || rightChild == null) {
+    } else if (leftChild == null | rightChild == null) {
       delNodeWithOneChild(nodeToRemove);
     } else {
       delNodeWithTwoChildren(nodeToRemove);
@@ -290,7 +285,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
    */
   private boolean delLeafNode(TreeNode<E> node) {
     if (node == this.root) {
-      this.root = null;
+      this.root = null; // erasing leaf node (root in this case)
     } else {
       TreeNode<E> parent = node.getParent();
       if (parent.getLeftChild() == node)
@@ -326,8 +321,8 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
    * @return true when node has been removed.
    */
   private boolean delNodeWithTwoChildren(TreeNode<E> node) {
-    TreeNode<E> levelOrderFirstChild = this.getInOrderFirstChild(node);
-    E value = levelOrderFirstChild.visit();
+    TreeNode<E> InOrderFirstChild = this.getInOrderFirstChild(node);
+    E value = InOrderFirstChild.visit();
     node.setValue(value);
     return this.remove(value, node.getRightChild());
   }
