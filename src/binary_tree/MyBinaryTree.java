@@ -350,12 +350,76 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
     onlyChild.setParent(parent);
   }
 
+  /**
+   * 
+   * @return Number of nodes in the Tree.
+   */
   public int size() {
     return this.size;
   }
 
+  /**
+   * Draws Tree in the console.
+   */
   public void drawMe() {
+    if (this.root == null) {
+      System.out.println("Empty Tree");
+      return;
+    }
 
+    int height = this.height();
+    int depth = height + 1;
+    int spaces = height * 4;
+    int maxNodesInTree = (int) ((Math.pow(2, depth)) - 1);
+
+    Queue<TreeNode<E>> queue = new LinkedList<>();
+    LinkedList<String> toDrawList = new LinkedList<>();
+    queue.add(this.root);
+
+    for (int i = 0; i < maxNodesInTree; i++) {
+      TreeNode<E> curr = queue.remove();
+      TreeNode<E> left = (curr != null) ? curr.getLeftChild() : null;
+      TreeNode<E> right = (curr != null) ? curr.getRightChild() : null;
+
+      toDrawList.add((curr != null) ? curr.visit().toString() : "null");
+
+      if (left != null)
+        queue.add(left);
+      else
+        queue.add(null);
+      if (right != null)
+        queue.add(right);
+      else
+        queue.add(null);
+    }
+
+    int nodesOnThisLevel = 1;
+    for (int i = 1; i <= depth; i++) {
+
+      int branchesSpace = nodesOnThisLevel / 2;
+
+      for (int s = 0; s < spaces; s++)
+        System.out.print("\s");
+      spaces -= 2;
+
+      for (int j = 1; j <= nodesOnThisLevel; j++) {
+        String node = toDrawList.remove();
+        System.out.print(node + " ");
+
+        if (j == branchesSpace)
+          for (int s = 0; s < ((depth * 2) - i); s++)
+            System.out.print(" ");
+      }
+      System.out.print("\n");
+
+      for (int s = 0; s < spaces; s++)
+        System.out.print("\s");
+      spaces -= 2;
+
+      System.out.print("\n");
+
+      nodesOnThisLevel *= 2;
+    }
   }
 
   public int height() {
