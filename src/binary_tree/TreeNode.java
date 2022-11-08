@@ -23,6 +23,15 @@ class TreeNode<E> {
     this.right = null;
   }
 
+  E setValue(E value) {
+    this.value = value;
+    return this.value;
+  }
+
+  E visit() {
+    return this.value;
+  }
+
   /**
    * 
    * @param value value of the left child to be set
@@ -63,20 +72,15 @@ class TreeNode<E> {
     return this.parent;
   }
 
+  void setParent(TreeNode<E> newParent) {
+    this.parent = newParent;
+  }
+
   TreeNode<E> changeLeftLink(TreeNode<E> pointed) {
     return this.left = pointed;
   }
 
   TreeNode<E> changeRightLink(TreeNode<E> pointed) {
     return this.right = pointed;
-  }
-
-  E setValue(E value) {
-    this.value = value;
-    return this.value;
-  }
-
-  E visit() {
-    return this.value;
   }
 }

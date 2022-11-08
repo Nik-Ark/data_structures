@@ -60,6 +60,8 @@ public class RemoveTest {
       assertEquals(postOrderAfterRemoveStr[i], bst_str_postOrder.get(i));
     }
     assertTrue(bst_str_postOrder.size() == bst_str.size() && bst_str.size() == 8);
+
+    assertEquals(3, bst_str.height());
   }
 
   @Test
@@ -97,6 +99,8 @@ public class RemoveTest {
       assertEquals(postOrderAfterRemoveInt[i], bst_int_postOrder.get(i));
     }
     assertTrue(bst_int_postOrder.size() == bst_int.size() && bst_int.size() == 7);
+
+    assertEquals(3, bst_int.height());
 
   }
 }

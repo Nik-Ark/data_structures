@@ -292,6 +292,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
         parent.removeLeftLeaf();
       else
         parent.removeRightLeaf();
+      node.setParent(null);
     }
     return true;
   }
@@ -304,10 +305,15 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
    */
   private boolean delNodeWithOneChild(TreeNode<E> node) {
     if (node == this.root) {
-      if (this.root.getLeftChild() != null)
-        this.root = this.root.getLeftChild();
-      else
-        this.root = this.root.getRightChild();
+      TreeNode<E> onlyChild = this.root.getLeftChild();
+      if (onlyChild != null) {
+        this.root = onlyChild;
+        onlyChild.setParent(null);
+      } else {
+        onlyChild = this.root.getRightChild();
+        this.root = onlyChild;
+        onlyChild.setParent(null);
+      }
     } else {
       changeParentLink(node);
     }
@@ -334,16 +340,37 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
    */
   private void changeParentLink(TreeNode<E> node) {
     TreeNode<E> parent = node.getParent();
-    TreeNode<E> child = node.getLeftChild();
-    if (child == null)
-      child = node.getRightChild();
+    TreeNode<E> onlyChild = node.getLeftChild();
+    if (onlyChild == null)
+      onlyChild = node.getRightChild();
     if (parent.getLeftChild() == node)
-      parent.changeLeftLink(child);
+      parent.changeLeftLink(onlyChild);
     else
-      parent.changeRightLink(child);
+      parent.changeRightLink(onlyChild);
+    onlyChild.setParent(parent);
   }
 
   public int size() {
     return this.size;
+  }
+
+  public void drawMe() {
+
+  }
+
+  public int height() {
+    if (this.root == null)
+      return -1;
+    return this.height(this.root);
+  }
+
+  private int height(TreeNode<E> startNode) {
+    if (startNode == null)
+      return -1;
+
+    int leftHeight = this.height(startNode.getLeftChild());
+    int rightHeight = this.height(startNode.getRightChild());
+
+    return Math.max(leftHeight, rightHeight) + 1;
   }
 }
