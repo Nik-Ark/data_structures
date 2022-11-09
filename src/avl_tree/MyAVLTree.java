@@ -216,6 +216,7 @@ public class MyAVLTree<E extends Comparable<? super E>> {
       return true;
     }
 
+    TreeNode<E> node = null;
     TreeNode<E> curr = this.root; // at this point root is never null
     TreeNode<E> prev = null; // at least one iteration occurs, so prev won't be null
     int comparedValue = 0;
@@ -230,10 +231,12 @@ public class MyAVLTree<E extends Comparable<? super E>> {
         return false;
     }
     if (comparedValue < 0)
-      prev.addLeftChild(value);
+      node = prev.addLeftChild(value);
     else
-      prev.addRightChild(value);
+      node = prev.addRightChild(value);
     this.size++;
+    if (this.size > 2)
+      checkBalance(node);
     return true;
   }
 
@@ -244,8 +247,15 @@ public class MyAVLTree<E extends Comparable<? super E>> {
    * @throws NullPointerException if argument's value is null.
    */
   public boolean remove(E value) {
-    if (this.remove(value, this.root)) {
+    // TODO: implement checkBalance in remove method.
+    // When leaf node deleted, checkBalance starts from parent of deleted node.
+    // When node with two children deleted, checkBalance starts from left child.
+    // When node with one child deleted, starts from child which took its place.
+    TreeNode<E> node = this.remove(value, this.root);
+    if (node != null) {
       this.size--;
+      if (size > 2)
+        checkBalance(node);
       return true;
     }
     return false;
@@ -256,12 +266,12 @@ public class MyAVLTree<E extends Comparable<? super E>> {
    * 
    * @param value     of element which has to be removed
    * @param startNode node from which proccess will start.
-   * @return true if element was removed or false if it is not in the Tree.
+   * @return node from which checkBalance method should start.
    */
-  private boolean remove(E value, TreeNode<E> startNode) {
+  private TreeNode<E> remove(E value, TreeNode<E> startNode) {
     TreeNode<E> nodeToRemove = this.binarySearch(value, startNode);
     if (nodeToRemove == null)
-      return false;
+      return null;
 
     TreeNode<E> leftChild = nodeToRemove.getLeftChild();
     TreeNode<E> rightChild = nodeToRemove.getRightChild();
@@ -434,5 +444,85 @@ public class MyAVLTree<E extends Comparable<? super E>> {
     int rightHeight = this.height(startNode.getRightChild());
 
     return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  private boolean isTreeImBalanced(TreeNode<E> node) {
+    int diff = this.height(node.getLeftChild()) - this.height(node.getRightChild());
+    if (diff > 1 | diff < -1)
+      return true;
+    else
+      return false;
+  }
+
+  private void checkBalance(TreeNode<E> node) {
+    TreeNode<E> parent = node.getParent();
+    if (isTreeImBalanced(node)) {
+      if (parent != null) {
+        if (parent.getLeftChild() == node)
+          parent.changeLeftLink(rebalance(node));
+        else
+          parent.changeRightLink(rebalance(node));
+      } else {
+        this.root = rebalance(node);
+      }
+    }
+    if (parent != null)
+      checkBalance(parent);
+  }
+
+  private TreeNode<E> rebalance(TreeNode<E> node) {
+    TreeNode<E> leftChild = node.getLeftChild();
+    TreeNode<E> rightChild = node.getRightChild();
+    if (this.height(leftChild) - this.height(rightChild) > 1) {
+      TreeNode<E> leftLeftChild = leftChild.getLeftChild();
+      TreeNode<E> leftRightChild = leftChild.getRightChild();
+      if (this.height(leftLeftChild) > this.height(leftRightChild))
+        return rightRotate(node);
+      else
+        return leftRightRotate(node);
+    } else {
+      TreeNode<E> rightRightChild = rightChild.getRightChild();
+      TreeNode<E> rightLeftChild = rightChild.getLeftChild();
+      if (this.height(rightRightChild) > this.height(rightLeftChild))
+        return leftRotate(node);
+      else
+        return rightLeftRotate(node);
+    }
+  }
+
+  private TreeNode<E> rightRotate(TreeNode<E> node) {
+    TreeNode<E> tmp = node.getLeftChild();
+    TreeNode<E> nodeParent = node.getParent();
+    tmp.setParent(nodeParent);
+    TreeNode<E> y = tmp.getRightChild();
+    node.changeLeftLink(y);
+    if (y != null)
+      y.setParent(node);
+    tmp.changeRightLink(node);
+    node.setParent(tmp);
+    return tmp;
+  }
+
+  private TreeNode<E> leftRotate(TreeNode<E> node) {
+    TreeNode<E> tmp = node.getRightChild();
+    TreeNode<E> nodeParent = node.getParent();
+    tmp.setParent(nodeParent);
+    TreeNode<E> y = tmp.getLeftChild();
+    node.changeRightLink(y);
+    if (y != null)
+      y.setParent(node);
+    tmp.changeLeftLink(node);
+    node.setParent(tmp);
+    return tmp;
+  }
+
+  private TreeNode<E> leftRightRotate(TreeNode<E> node) {
+    node.changeLeftLink(leftRotate(node.getLeftChild()));
+    return rightRotate(node);
+  }
+
+  private TreeNode<E> rightLeftRotate(TreeNode<E> node) {
+    node.changeRightLink(rightRotate(node.getRightChild()));
+    return leftRotate(node);
   }
 }
