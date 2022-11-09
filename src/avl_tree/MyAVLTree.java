@@ -1,4 +1,4 @@
-package binary_tree;
+package avl_tree;
 
 import doubly_linked_list.MyDLL;
 
@@ -7,27 +7,26 @@ import java.util.Queue;
 
 /**
  * @author Nikki
- * @implNote Binary Search Tree (Not balanced).
+ * @implNote Balanced AVL Tree.
  */
-public class MyBinaryTree<E extends Comparable<? super E>> {
+public class MyAVLTree<E extends Comparable<? super E>> {
   private TreeNode<E> root;
   private int size;
 
   /**
-   * BST Constructor creates empty BST.
+   * AVL Tree Constructor creates empty AVL Tree.
    */
-  public MyBinaryTree() {
+  public MyAVLTree() {
     this.root = null;
     this.size = 0;
   }
 
   /**
-   * BST Constructor creates BST and adds array of elements in the order they are
-   * in the array
+   * AVL Tree Constructor creates AVL Tree and adds array of elements
    * 
-   * @param array of nodes to be added into BST.
+   * @param array of nodes to be added into AVL Tree.
    */
-  public MyBinaryTree(E array[]) {
+  public MyAVLTree(E array[]) {
     this();
     for (int i = 0; i < array.length; i++) {
       this.insert(array[i]);
@@ -35,7 +34,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
   }
 
   /**
-   * In Order BST Traversal
+   * In Order AVL Tree Traversal
    * 
    * @return MyDLL of node values.
    */
@@ -48,7 +47,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
   }
 
   /**
-   * Internal recursive BST InOrder Traversal
+   * Internal recursive AVL Tree InOrder Traversal
    * 
    * @param node from which Traversal starts
    * @param list to add visited nodes.
@@ -63,7 +62,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
   }
 
   /**
-   * Pre Order BST Traversal
+   * Pre Order AVL Tree Traversal
    * 
    * @return MyDLL of node values.
    */
@@ -76,7 +75,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
   }
 
   /**
-   * Internal recursive BST Pre Order Traversal
+   * Internal recursive AVL Tree Pre Order Traversal
    * 
    * @param node from which Traversal starts
    * @param list to add visited nodes.
@@ -91,7 +90,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
   }
 
   /**
-   * Post Order BST Traversal
+   * Post Order AVL Tree Traversal
    * 
    * @return MyDLL of node values.
    */
@@ -104,7 +103,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
   }
 
   /**
-   * Internal recursive BST Post Order Traversal
+   * Internal recursive AVL Tree Post Order Traversal
    * 
    * @param node from which Traversal starts
    * @param list to add visited nodes.
@@ -119,7 +118,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
   }
 
   /**
-   * Level Order BST Traversal
+   * Level Order AVL Tree Traversal
    * 
    * @return MyDLL of node values.
    */
@@ -167,8 +166,8 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
 
   /**
    * 
-   * @param value Value to find in BST
-   * @return true if node is in the BST or false if there is no one.
+   * @param value Value to find in the AVL Tree
+   * @return true if node is in the Tree or false if there is no one.
    * @throws NullPointerException if argument's value is null.
    */
   public boolean find(E value) {
@@ -180,7 +179,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
 
   /**
    * 
-   * @param value     Value to find in BST
+   * @param value     Value to find in the AVL Tree
    * @param startNode Node from which binary search is going to start
    * @return pointer to found node or null if there is no one
    * @throws NullPointerException if argument's value is null.
@@ -204,8 +203,8 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
 
   /**
    * 
-   * @param value Value to be inserted into BST
-   * @return true if value was inserted or false if it already exists in the BST
+   * @param value Value to be inserted into AVL Tree
+   * @return true if value was inserted or false if it already exists in the Tree
    * @throws NullPointerException if argument's value is null.
    */
   public boolean insert(E value) {
@@ -240,7 +239,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
 
   /**
    * 
-   * @param value to be removed from the BST
+   * @param value to be removed from the AVL Tree
    * @return true if value successfully removed or false if there is no such value
    * @throws NullPointerException if argument's value is null.
    */
@@ -257,7 +256,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
    * 
    * @param value     of element which has to be removed
    * @param startNode node from which proccess will start.
-   * @return true if element was removed or false if it is not in the BST.
+   * @return true if element was removed or false if it is not in the Tree.
    */
   private boolean remove(E value, TreeNode<E> startNode) {
     TreeNode<E> nodeToRemove = this.binarySearch(value, startNode);
@@ -278,7 +277,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
   }
 
   /**
-   * Helper method for deleting Leaf Node from the BST
+   * Helper method for deleting Leaf Node from the AVL Tree
    * 
    * @param node to be removed
    * @return true when node has been removed.
