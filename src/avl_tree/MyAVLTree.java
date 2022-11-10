@@ -241,21 +241,15 @@ public class MyAVLTree<E extends Comparable<? super E>> {
   }
 
   /**
+   * Removes element with given value and after balances nodes in the AVL Tree
    * 
    * @param value to be removed from the AVL Tree
-   * @return true if value successfully removed or false if there is no such value
+   * @return true if value was removed or false if there is no such a value
    * @throws NullPointerException if argument's value is null.
    */
   public boolean remove(E value) {
-    // TODO: implement checkBalance in remove method.
-    // When leaf node deleted, checkBalance starts from parent of deleted node.
-    // When node with two children deleted, checkBalance starts from left child.
-    // When node with one child deleted, starts from child which took its place.
-    TreeNode<E> node = this.remove(value, this.root);
-    if (node != null) {
+    if (this.remove(value, this.root)) {
       this.size--;
-      if (size > 2)
-        checkBalance(node);
       return true;
     }
     return false;
@@ -263,15 +257,16 @@ public class MyAVLTree<E extends Comparable<? super E>> {
 
   /**
    * Remove which takes in value and node from which removal proccess will begin
+   * After node's removal Tree balances themself
    * 
    * @param value     of element which has to be removed
    * @param startNode node from which proccess will start.
-   * @return node from which checkBalance method should start.
+   * @return True if element was removed or False if it is not in the Tree.
    */
-  private TreeNode<E> remove(E value, TreeNode<E> startNode) {
+  private boolean remove(E value, TreeNode<E> startNode) {
     TreeNode<E> nodeToRemove = this.binarySearch(value, startNode);
     if (nodeToRemove == null)
-      return null;
+      return false;
 
     TreeNode<E> leftChild = nodeToRemove.getLeftChild();
     TreeNode<E> rightChild = nodeToRemove.getRightChild();
@@ -290,7 +285,9 @@ public class MyAVLTree<E extends Comparable<? super E>> {
    * Helper method for deleting Leaf Node from the AVL Tree
    * 
    * @param node to be removed
-   * @return true when node has been removed.
+   * @return true when node has been removed
+   * @implNote After removal checks balance of the AVL Tree
+   *           starting from the parent of deleated leaf.
    */
   private boolean delLeafNode(TreeNode<E> node) {
     if (node == this.root) {
@@ -302,6 +299,8 @@ public class MyAVLTree<E extends Comparable<? super E>> {
       else
         parent.removeRightLeaf();
       node.setParent(null);
+      if (this.size > 2)
+        checkBalance(parent);
     }
     return true;
   }
@@ -315,22 +314,21 @@ public class MyAVLTree<E extends Comparable<? super E>> {
   private boolean delNodeWithOneChild(TreeNode<E> node) {
     if (node == this.root) {
       TreeNode<E> onlyChild = this.root.getLeftChild();
-      if (onlyChild != null) {
-        this.root = onlyChild;
-        onlyChild.setParent(null);
-      } else {
-        onlyChild = this.root.getRightChild();
-        this.root = onlyChild;
-        onlyChild.setParent(null);
-      }
+      onlyChild = onlyChild == null ? this.root.getRightChild() : onlyChild;
+      this.root = onlyChild;
+      onlyChild.setParent(null);
     } else {
-      changeParentLink(node);
+      TreeNode<E> startRebalance = changeParentLink(node);
+      if (this.size > 2)
+        checkBalance(startRebalance);
     }
     return true;
   }
 
   /**
    * Helper method for deleting node which has two Children
+   * After deleting Node, proccess of rebalancing the AVL Tree will start from the
+   * first left successor (Child) of deleted Node
    * 
    * @param node to be removed
    * @return true when node has been removed.
@@ -339,24 +337,28 @@ public class MyAVLTree<E extends Comparable<? super E>> {
     TreeNode<E> InOrderFirstChild = this.getInOrderFirstChild(node);
     E value = InOrderFirstChild.visit();
     node.setValue(value);
-    return this.remove(value, node.getRightChild());
+    this.remove(value, node.getRightChild());
+    if (this.size > 2)
+      this.checkBalance(node.getLeftChild());
+    return true;
   }
 
   /**
    * Helper method for deleting Node which has one Child
    * 
-   * @param node to be removed.
+   * @param Node to be removed
+   * @return Node from which proccess of rebalancing the AVL Tree should start.
    */
-  private void changeParentLink(TreeNode<E> node) {
+  private TreeNode<E> changeParentLink(TreeNode<E> node) {
     TreeNode<E> parent = node.getParent();
     TreeNode<E> onlyChild = node.getLeftChild();
-    if (onlyChild == null)
-      onlyChild = node.getRightChild();
+    onlyChild = onlyChild == null ? node.getRightChild() : onlyChild;
     if (parent.getLeftChild() == node)
       parent.changeLeftLink(onlyChild);
     else
       parent.changeRightLink(onlyChild);
     onlyChild.setParent(parent);
+    return onlyChild;
   }
 
   /**

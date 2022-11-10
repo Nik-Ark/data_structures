@@ -12,60 +12,60 @@ import static avl_tree.tests.Samples.*;
 
 public class FindTest {
 
-  private static MyAVLTree<String> bst_str;
-  private static MyAVLTree<Integer> bst_int;
-  private static MyAVLTree<String> bst_str_empty;
-  private static MyAVLTree<Integer> bst_int_empty;
+  private static MyAVLTree<String> avl_str;
+  private static MyAVLTree<Integer> avl_int;
+  private static MyAVLTree<String> avl_str_empty;
+  private static MyAVLTree<Integer> avl_int_empty;
 
   @Before
   public void setUp() {
-    bst_str = new MyAVLTree<>(strArr);
-    bst_int = new MyAVLTree<>(intArr);
-    bst_str_empty = new MyAVLTree<>();
-    bst_int_empty = new MyAVLTree<>();
+    avl_str = new MyAVLTree<>(strArr);
+    avl_int = new MyAVLTree<>(intArrAVL);
+    avl_str_empty = new MyAVLTree<>();
+    avl_int_empty = new MyAVLTree<>();
   }
 
   @Test
   public void testFindStr() {
 
-    assertThrows(NullPointerException.class, () -> bst_str.find(null));
+    assertThrows(NullPointerException.class, () -> avl_str.find(null));
 
-    assertFalse(bst_str_empty.find("A"));
-    bst_str_empty.insert("A");
-    assertTrue(bst_str_empty.find("A"));
+    assertFalse(avl_str_empty.find("A"));
+    avl_str_empty.insert("A");
+    assertTrue(avl_str_empty.find("A"));
 
-    assertFalse(bst_str.find("m"));
-    assertFalse(bst_str.find("n"));
-    assertFalse(bst_str.find("W"));
-    assertFalse(bst_str.find("F"));
-    assertFalse(bst_str.find("Z"));
+    assertFalse(avl_str.find("m"));
+    assertFalse(avl_str.find("n"));
+    assertFalse(avl_str.find("W"));
+    assertFalse(avl_str.find("F"));
+    assertFalse(avl_str.find("Z"));
 
-    bst_str.insert("Z");
+    avl_str.insert("Z");
 
-    assertTrue(bst_str.find("Z"));
-    assertTrue(bst_str.find("R"));
-    assertTrue(bst_str.find("M"));
-    assertTrue(bst_str.find("N"));
-    assertTrue(bst_str.find("G"));
-    assertTrue(bst_str.find("J"));
+    assertTrue(avl_str.find("Z"));
+    assertTrue(avl_str.find("R"));
+    assertTrue(avl_str.find("M"));
+    assertTrue(avl_str.find("N"));
+    assertTrue(avl_str.find("G"));
+    assertTrue(avl_str.find("J"));
   }
 
   @Test
   public void testFindInt() {
 
-    assertThrows(NullPointerException.class, () -> bst_int.find(null));
+    assertThrows(NullPointerException.class, () -> avl_int.find(null));
 
-    assertFalse(bst_int_empty.find(8));
-    bst_int_empty.insert(8);
-    assertTrue(bst_int_empty.find(8));
+    assertFalse(avl_int_empty.find(8));
+    avl_int_empty.insert(8);
+    assertTrue(avl_int_empty.find(8));
 
-    assertTrue(bst_int.find(100));
-    assertTrue(bst_int.find(170));
-    assertTrue(bst_int.find(25));
-    assertTrue(bst_int.find(150));
-    assertTrue(bst_int.find(90));
+    assertTrue(avl_int.find(100));
+    assertTrue(avl_int.find(170));
+    assertTrue(avl_int.find(25));
+    assertTrue(avl_int.find(150));
+    assertTrue(avl_int.find(90));
 
-    assertFalse(bst_int.find(131));
-    assertFalse(bst_int.find(0));
+    assertFalse(avl_int.find(131));
+    assertFalse(avl_int.find(0));
   }
 }

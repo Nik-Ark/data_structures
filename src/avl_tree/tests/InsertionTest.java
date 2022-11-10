@@ -13,121 +13,81 @@ import static avl_tree.tests.Samples.*;
 
 public class InsertionTest {
 
-  private static MyAVLTree<String> bst_str;
-  private static MyAVLTree<String> bst_str_fromArr;
-  private static MyAVLTree<Integer> bst_int;
-  private static MyAVLTree<Integer> bst_int_fromArr;
+  private static MyAVLTree<String> avl_str;
+  private static MyAVLTree<String> avl_str_fromArr;
+  private static MyAVLTree<Integer> avl_int_fromArr;
 
   @Before
   public void setUp() {
-    bst_str = new MyAVLTree<>();
-    bst_int = new MyAVLTree<>();
-    bst_str_fromArr = new MyAVLTree<>(strArr);
-    bst_int_fromArr = new MyAVLTree<>(intArr);
+    avl_str = new MyAVLTree<>();
+    avl_str_fromArr = new MyAVLTree<>(strArr);
+    avl_int_fromArr = new MyAVLTree<>(intArrAVL);
   }
 
   @Test
   public void testInsertStr() {
 
-    assertThrows(NullPointerException.class, () -> bst_str.insert(null));
+    assertThrows(NullPointerException.class, () -> avl_str.insert(null));
 
-    assertTrue(bst_str.insert("N"));
-    assertFalse(bst_str.insert("N"));
+    assertTrue(avl_str.insert("N"));
+    assertFalse(avl_str.insert("N"));
 
-    bst_str.insert("H");
-    bst_str.insert("U");
-    bst_str.insert("X");
-    bst_str.insert("K");
-    bst_str.insert("R");
+    avl_str.insert("H");
+    avl_str.insert("U");
+    avl_str.insert("X");
+    avl_str.insert("K");
+    avl_str.insert("R");
 
-    assertTrue(bst_str.insert("E"));
-    assertFalse(bst_str.insert("E"));
+    assertTrue(avl_str.insert("E"));
+    assertFalse(avl_str.insert("E"));
 
-    bst_str.insert("G");
-    bst_str.insert("L");
-    bst_str.insert("J");
-    bst_str.insert("T");
-    bst_str.insert("V");
+    avl_str.insert("G");
+    avl_str.insert("L");
+    avl_str.insert("J");
+    avl_str.insert("T");
+    avl_str.insert("V");
 
-    assertTrue(bst_str.insert("M"));
-    assertFalse(bst_str.insert("M"));
+    assertTrue(avl_str.insert("M"));
+    assertFalse(avl_str.insert("M"));
 
-    assertFalse(bst_str.insert("N"));
+    assertFalse(avl_str.insert("N"));
 
-    MyDLL<String> bst_str_preOrder = bst_str.preOrder();
+    MyDLL<String> avl_str_preOrder = avl_str.preOrder();
     for (int i = 0; i < strPreOrderSample.length; i++) {
-      assertEquals(strPreOrderSample[i], bst_str_preOrder.get(i), "bst_str PreOrder test");
+      assertEquals(strPreOrderSample[i], avl_str_preOrder.get(i), "avl_str PreOrder test");
     }
 
-    assertTrue(bst_str_preOrder.size() == bst_str.size() && bst_str.size() == 13, "test insert str size");
-  }
-
-  @Test
-  public void testInsertInt() {
-
-    assertThrows(NullPointerException.class, () -> bst_int.insert(null));
-
-    assertTrue(bst_int.insert(100));
-    assertFalse(bst_int.insert(100));
-
-    bst_int.insert(200);
-    bst_int.insert(50);
-    bst_int.insert(90);
-    bst_int.insert(30);
-    bst_int.insert(40);
-
-    assertTrue(bst_int.insert(99));
-    assertFalse(bst_int.insert(99));
-
-    bst_int.insert(25);
-    bst_int.insert(70);
-    bst_int.insert(150);
-    bst_int.insert(170);
-    bst_int.insert(230);
-
-    assertTrue(bst_int.insert(130));
-    assertFalse(bst_int.insert(130));
-
-    assertFalse(bst_int.insert(100));
-
-    MyDLL<Integer> bst_int_preOrder = bst_int.preOrder();
-    for (int i = 0; i < intPreOrderSample.length; i++) {
-      assertEquals(intPreOrderSample[i], bst_int_preOrder.get(i), "bst_int PreOrder test");
-    }
-
-    assertTrue(bst_int_preOrder.size() == bst_int.size() && bst_int.size() == 13, "test insert int size");
+    assertTrue(avl_str_preOrder.size() == avl_str.size() && avl_str.size() == 13, "check str size");
   }
 
   @Test
   public void testInsertArray() {
 
     String strTestSample[] = { "N", "H", "E", "G", "K", "J", "L", "M", "U", "R", "T", "X", "V", "Z" };
-    int intTestSample[] = { 100, 50, 30, 25, 40, 90, 70, 99, 200, 150, 130, 170, 230, 250 };
 
-    assertFalse(bst_str_fromArr.insert("N"));
-    assertFalse(bst_str_fromArr.insert("E"));
-    assertFalse(bst_str_fromArr.insert("M"));
-    assertFalse(bst_int_fromArr.insert(100));
-    assertFalse(bst_int_fromArr.insert(99));
-    assertFalse(bst_int_fromArr.insert(130));
+    assertFalse(avl_str_fromArr.insert("N"));
+    assertFalse(avl_str_fromArr.insert("E"));
+    assertFalse(avl_str_fromArr.insert("M"));
+    assertFalse(avl_int_fromArr.insert(100));
+    assertFalse(avl_int_fromArr.insert(250));
+    assertFalse(avl_int_fromArr.insert(130));
 
-    bst_str_fromArr.insert("Z");
-    bst_int_fromArr.insert(250);
+    avl_str_fromArr.insert("Z");
 
-    MyDLL<String> bst_str_preOrder = bst_str_fromArr.preOrder();
+    MyDLL<String> avl_str_preOrder = avl_str_fromArr.preOrder();
     for (int i = 0; i < strTestSample.length; i++) {
-      assertEquals(strTestSample[i], bst_str_preOrder.get(i), "bst_str Insert Array test");
+      assertEquals(strTestSample[i], avl_str_preOrder.get(i), "avl_str Insert Array test");
     }
 
-    assertTrue(bst_str_preOrder.size() == bst_str_fromArr.size() && bst_str_fromArr.size() == 14,
+    assertTrue(avl_str_preOrder.size() == avl_str_fromArr.size() && avl_str_fromArr.size() == 14,
         "test size of tree created with Array");
 
-    MyDLL<Integer> bst_int_preOrder = bst_int_fromArr.preOrder();
-    for (int i = 0; i < intTestSample.length; i++) {
-      assertEquals(intTestSample[i], bst_int_preOrder.get(i), "bst_int Insert Array test");
+    MyDLL<Integer> avl_int_preOrder = avl_int_fromArr.preOrder();
+    for (int i = 0; i < intPreOrderSample.length; i++) {
+      assertEquals(intPreOrderSample[i], avl_int_preOrder.get(i), "avl_int Insert Array test");
     }
 
-    assertTrue(bst_int_preOrder.size() == bst_int_fromArr.size() && bst_int_fromArr.size() == 14,
+    assertTrue(avl_int_preOrder.size() == avl_int_fromArr.size() && avl_int_fromArr.size() == 14,
         "test size of tree created with Array");
   }
 }

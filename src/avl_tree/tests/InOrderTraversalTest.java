@@ -13,34 +13,34 @@ import static avl_tree.tests.Samples.*;
 
 public class InOrderTraversalTest {
 
-  private static MyAVLTree<String> bst_str;
-  private static MyAVLTree<Integer> bst_int;
-  private static MyAVLTree<Integer> bst_empty;
+  private static MyAVLTree<String> avl_str;
+  private static MyAVLTree<Integer> avl_int;
+  private static MyAVLTree<Integer> avl_empty;
 
   @Before
   public void setUp() {
-    bst_str = new MyAVLTree<>(strArr);
-    bst_int = new MyAVLTree<>(intArr);
-    bst_empty = new MyAVLTree<>();
+    avl_str = new MyAVLTree<>(strArr);
+    avl_int = new MyAVLTree<>(intArrAVL);
+    avl_empty = new MyAVLTree<>();
   }
 
   @Test
   public void testInOrderTraversal() {
 
-    assertTrue(bst_empty.inOrder() != null);
+    assertTrue(avl_empty.inOrder() != null);
 
-    MyDLL<String> bst_str_inOrder = bst_str.inOrder();
+    MyDLL<String> avl_str_inOrder = avl_str.inOrder();
     for (int i = 0; i < strInOrderSample.length; i++) {
-      assertEquals(strInOrderSample[i], bst_str_inOrder.get(i), "bst_str InOrder traversal test");
+      assertEquals(strInOrderSample[i], avl_str_inOrder.get(i), "avl_str InOrder traversal test");
     }
 
-    assertTrue((bst_str_inOrder.size() == bst_str.size() && bst_str.size() == 13), "Check BST size");
+    assertTrue((avl_str_inOrder.size() == avl_str.size() && avl_str.size() == 13), "Check tree size");
 
-    MyDLL<Integer> bst_int_inOrder = bst_int.inOrder();
+    MyDLL<Integer> avl_int_inOrder = avl_int.inOrder();
     for (int i = 0; i < intInOrderSample.length; i++) {
-      assertEquals(intInOrderSample[i], bst_int_inOrder.get(i), "bst_int InOrder traversal test");
+      assertEquals(intInOrderSample[i], avl_int_inOrder.get(i), "avl_int InOrder traversal test");
     }
 
-    assertTrue((bst_int_inOrder.size() == bst_int.size() && bst_int.size() == 13), "Check BST size");
+    assertTrue((avl_int_inOrder.size() == avl_int.size() && avl_int.size() == 14), "Check tree size");
   }
 }

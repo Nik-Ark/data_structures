@@ -257,7 +257,7 @@ public class MyBinaryTree<E extends Comparable<? super E>> {
    * 
    * @param value     of element which has to be removed
    * @param startNode node from which proccess will start.
-   * @return true if element was removed or false if it is not in the BST.
+   * @return True if element was removed or False if it is not in the BST.
    */
   private boolean remove(E value, TreeNode<E> startNode) {
     TreeNode<E> nodeToRemove = this.binarySearch(value, startNode);
