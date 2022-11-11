@@ -146,7 +146,7 @@ public class MyAVLTree<E extends Comparable<? super E>> {
 
   /**
    * Helper method for finding first InOrder Successor of a given Node,
-   * which has TWO CHILDREN!
+   * WHICH HAS GOT TWO CHILDREN!
    * 
    * @param node from which searching starts
    * @return Given node's first InOrder successor
@@ -154,7 +154,7 @@ public class MyAVLTree<E extends Comparable<? super E>> {
    */
   private TreeNode<E> getInOrderFirstChild(TreeNode<E> node) {
     if (node.getLeftChild() == null | node.getRightChild() == null)
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Given Node Must Have Two Children!");
     TreeNode<E> curr = node.getRightChild();
     TreeNode<E> prev = null; // Curr is never null in the first itteration, so prev can be init as null
     while (curr != null) {
