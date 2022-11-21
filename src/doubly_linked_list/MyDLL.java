@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 // TODO: Add JUnit Tests for size() and remove()
+// TODO: Also contains() method should be added.
 
 /**
  * A class that implements a doubly linked list
@@ -15,7 +16,7 @@ import java.util.Collections;
  *
  * @param <E> The type of the elements stored in the list
  */
-public class MyDLL<E extends Comparable<? super E>> extends AbstractList<E> {
+public class MyDLL<E> extends AbstractList<E> {
   private LLNode<E> head;
   private LLNode<E> tail;
   private int size;
@@ -49,13 +50,29 @@ public class MyDLL<E extends Comparable<? super E>> extends AbstractList<E> {
       size++;
       return true;
     }
-
     tail.next = new LLNode<E>(element);
     tail.next.prev = tail;
     tail = tail.next;
-
     size++;
     return true;
+  }
+
+  public void addLast(E element) {
+    add(element);
+  }
+
+  public void addFirst(E element) {
+    if (element == null)
+      throw new NullPointerException();
+    if (head == null) {
+      head = new LLNode<E>(element);
+      tail = head;
+      size++;
+    }
+    head.prev = new LLNode<E>(element);
+    head.prev.next = head;
+    head = head.prev;
+    size++;
   }
 
   /**
@@ -235,10 +252,7 @@ public class MyDLL<E extends Comparable<? super E>> extends AbstractList<E> {
 
     LLNode<E> c;
 
-    E dataA = a.data;
-    E dataB = b.data;
-
-    if (dataA.compareTo(dataB) < 0) {
+    if (a.compareTo(b) < 0) {
       c = a;
       c.next = merge(a.next, b);
     } else {
@@ -351,7 +365,7 @@ public class MyDLL<E extends Comparable<? super E>> extends AbstractList<E> {
   }
 }
 
-class LLNode<E> {
+class LLNode<E> implements Comparable<LLNode<E>> {
   LLNode<E> prev;
   LLNode<E> next;
   E data;
@@ -360,5 +374,10 @@ class LLNode<E> {
     this.data = e;
     this.prev = null;
     this.next = null;
+  }
+
+  @Override
+  public int compareTo(LLNode<E> other) {
+    return ((Comparable<E>) this.data).compareTo(other.data);
   }
 }

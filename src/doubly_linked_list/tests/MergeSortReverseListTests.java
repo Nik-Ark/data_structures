@@ -14,9 +14,10 @@ import doubly_linked_list.MyDLL;
 
 /**
  * @author Nikki
- *         Tests for two methods which demonstrates that all inherit links
- *         rearanged correctly after Sorting and after Reversing, including head
- *         and tail pointers.
+ * @implNote Tests for two methods which demonstrates that all inherit links
+ *           rearanged correctly after Sorting and after Reversing, including
+ *           head
+ *           and tail pointers.
  */
 public class MergeSortReverseListTests {
 
