@@ -1,10 +1,6 @@
 package doubly_linked_list;
 
 import java.util.AbstractList;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Arrays;
-import java.util.Collections;
 
 // TODO: Add JUnit Tests for size() and remove()
 // TODO: Also contains() method should be added.
@@ -17,6 +13,33 @@ import java.util.Collections;
  * @param <E> The type of the elements stored in the list
  */
 public class MyDLL<E> extends AbstractList<E> {
+
+  /*
+   * Inner Class is accesible by default only in package.
+   * 
+   * It's Constructor accessible by default only in package,
+   * and only through instance of the Outer Class.
+   * 
+   * If access modifer set to private, Both accessible only in Outer Class.
+   * 
+   */
+  private class LLNode<E> implements Comparable<LLNode<E>> {
+    private LLNode<E> prev;
+    private LLNode<E> next;
+    private E data;
+
+    private LLNode(E obj) {
+      this.data = obj;
+      this.prev = null;
+      this.next = null;
+    }
+
+    @Override
+    public int compareTo(LLNode<E> other) {
+      return ((Comparable<E>) this.data).compareTo(other.data);
+    }
+  }
+
   private LLNode<E> head;
   private LLNode<E> tail;
   private int size;
@@ -38,12 +61,9 @@ public class MyDLL<E> extends AbstractList<E> {
   /**
    * Appends an element to the end of the list
    * 
-   * @throws NullPointerException if null was set as a value
    * @param element The element to add
    */
   public boolean add(E element) {
-    if (element == null)
-      throw new NullPointerException();
     if (head == null) {
       head = new LLNode<E>(element);
       tail = head;
@@ -62,8 +82,6 @@ public class MyDLL<E> extends AbstractList<E> {
   }
 
   public void addFirst(E element) {
-    if (element == null)
-      throw new NullPointerException();
     if (head == null) {
       head = new LLNode<E>(element);
       tail = head;
@@ -102,11 +120,8 @@ public class MyDLL<E> extends AbstractList<E> {
    * @param element The element to add
    * 
    * @throws IndexOutOfBoundsException if the index is out of bounds
-   * @throws NullPointerException      if null was set as a value.
    */
   public void add(int index, E element) {
-    if (element == null)
-      throw new NullPointerException();
     if (index > size | index < 0)
       throw new IndexOutOfBoundsException();
 
@@ -184,6 +199,10 @@ public class MyDLL<E> extends AbstractList<E> {
     return temp.data;
   }
 
+  public E remove() {
+    return remove(0);
+  }
+
   /**
    * Set an index position in the list to a new element
    * 
@@ -191,7 +210,6 @@ public class MyDLL<E> extends AbstractList<E> {
    * @param element The new element
    * @return The element that was replaced
    * @throws IndexOutOfBoundsException if the index is out of bounds
-   * @throws NullPointerException      if null was set as a value.
    */
   public E set(int index, E element) {
     // TODO: Implement this method
@@ -296,88 +314,5 @@ public class MyDLL<E> extends AbstractList<E> {
       tmp.next = tmp_2;
       tmp = tmp.next;
     }
-  }
-
-  /**
-   * Tests for my MergeSort and Revers MyDLL algorithm.
-   * 
-   * @param args
-   * 
-   */
-  public static void main(String[] args) {
-
-    Random rand = new Random();
-    Integer[] numbers = new Integer[21];
-
-    for (int i = 0; i < 21; i++) {
-      numbers[i] = rand.nextInt(100);
-    }
-
-    LinkedList<Integer> originLL = new LinkedList<>(Arrays.asList(numbers));
-    MyDLL<Integer> myLL = new MyDLL<>(numbers);
-
-    System.out.println("Before Sorting:");
-    for (int i = 0; i < 21; i++) {
-      System.out.println("Origin: " + originLL.get(i) + " My: " + myLL.get(i));
-    }
-
-    Collections.sort(originLL);
-    myLL.mergeSort();
-
-    System.out.println("After Sorting:");
-    for (int i = 0; i < 21; i++) {
-      String status;
-      if (originLL.get(i) == myLL.get(i))
-        status = "Passed";
-      else
-        status = "Failed";
-
-      System.out.println("Origin: " + originLL.get(i) + " My: " + myLL.get(i) + " Status: " + status);
-    }
-
-    Collections.reverse(originLL);
-    myLL.reverse();
-
-    System.out.println("After Reversing:");
-    for (int i = 0; i < 21; i++) {
-      String status;
-      if (originLL.get(i) == myLL.get(i))
-        status = "Passed";
-      else
-        status = "Failed";
-
-      System.out.println("Origin: " + originLL.get(i) + " My: " + myLL.get(i) + " Status: " + status);
-    }
-
-    Collections.reverse(originLL);
-    myLL.reverse();
-
-    System.out.println("After 2nd Reversing:");
-    for (int i = 0; i < 21; i++) {
-      String status;
-      if (originLL.get(i) == myLL.get(i))
-        status = "Passed";
-      else
-        status = "Failed";
-
-      System.out.println("Origin: " + originLL.get(i) + " My: " + myLL.get(i) + " Status: " + status);
-    }
-  }
-}
-
-class LLNode<E> implements Comparable<LLNode<E>> {
-  LLNode<E> prev;
-  LLNode<E> next;
-  E data;
-
-  LLNode(E e) {
-    this.data = e;
-    this.prev = null;
-    this.next = null;
-  }
-
-  @Override
-  public int compareTo(LLNode<E> other) {
-    return ((Comparable<E>) this.data).compareTo(other.data);
   }
 }

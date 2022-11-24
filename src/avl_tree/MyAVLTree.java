@@ -2,9 +2,6 @@ package avl_tree;
 
 import doubly_linked_list.MyDLL;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 /**
  * @author Nikki
  * @implNote Balanced AVL Tree.
@@ -126,7 +123,7 @@ public class MyAVLTree<E extends Comparable<? super E>> {
     if (this.root == null)
       return new MyDLL<>();
 
-    Queue<TreeNode<E>> queue = new LinkedList<>();
+    MyDLL<TreeNode<E>> queue = new MyDLL<>();
     queue.add(this.root);
     MyDLL<E> traverseList = new MyDLL<>();
 
@@ -383,8 +380,8 @@ public class MyAVLTree<E extends Comparable<? super E>> {
     int spaces = height * 4;
     int maxNodesInTree = (int) ((Math.pow(2, depth)) - 1);
 
-    Queue<TreeNode<E>> queue = new LinkedList<>();
-    LinkedList<String> toDrawList = new LinkedList<>();
+    MyDLL<TreeNode<E>> queue = new MyDLL<>();
+    MyDLL<String> toDrawList = new MyDLL<>();
     queue.add(this.root);
 
     for (int i = 0; i < maxNodesInTree; i++) {

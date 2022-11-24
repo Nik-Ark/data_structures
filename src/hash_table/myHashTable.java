@@ -4,22 +4,7 @@ import doubly_linked_list.MyDLL;
 
 public class myHashTable<K extends Comparable<? super K>, V> implements myHashTableI<K, V> {
 
-  private class HashElement<K, V> {
-    private K key;
-    private V value;
-    private int hash;
-
-    public HashElement(K key, V value, int hash) {
-      this.key = key;
-      this.value = value;
-      this.hash = hash;
-    }
-
-    @Override
-    public String toString() {
-      return "[key: " + this.key.toString() + ", value: " + this.value + " ]";
-    }
-  }
+  // TODO: Consider adding next methods: clear(), keys(), values()
 
   // Predifined Array of Prime numbers for tableSize of hashTable:
   private static final int[] primes = { 13, 29, 61, 131, 271, 547, 1097, 2207, 4409, 8807, 17609, 35221 };
@@ -110,11 +95,10 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
     int index = hash % this.tableSize;
 
     MyDLL<HashElement<K, V>> chainRoot = this.hashTable[index];
-    if (chainRoot != null) {
-      HashElement<K, V> node = getChainNodeByKey(chainRoot, key);
-      if (node != null)
-        return node;
-    }
+    HashElement<K, V> node = getChainNodeByKey(chainRoot, key);
+    if (node != null)
+      return node;
+
     return null;
   }
 
@@ -139,9 +123,35 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
     return this.size;
   }
 
-  public V remove() {
-    // TODO: Implement this method
-    return (V) "removed";
+  public boolean isEmpty() {
+    return this.size == 0;
+  }
+
+  public V remove(K key) {
+    if (key == null)
+      throw new NullPointerException();
+
+    int hash = getHash(key);
+    int index = hash % this.tableSize;
+
+    MyDLL<HashElement<K, V>> chainRoot = this.hashTable[index];
+    HashElement<K, V> nodeToRemove = null;
+
+    int i = 0;
+    for (HashElement<K, V> chainNode : chainRoot) {
+      if (chainNode.key.compareTo(key) == 0) {
+        nodeToRemove = chainNode;
+        break;
+      }
+      i++;
+    }
+
+    if (nodeToRemove == null)
+      return null;
+
+    this.size--;
+    this.loadFactor = this.size / this.tableSize;
+    return chainRoot.remove(i).value;
   }
 
   public void drawMe() {
@@ -164,5 +174,22 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
       }
       System.out.print("\n");
     }
+  }
+}
+
+class HashElement<K, V> {
+  K key;
+  V value;
+  int hash;
+
+  public HashElement(K key, V value, int hash) {
+    this.key = key;
+    this.value = value;
+    this.hash = hash;
+  }
+
+  @Override
+  public String toString() {
+    return "[key: " + this.key.toString() + ", value: " + this.value + " ]";
   }
 }
