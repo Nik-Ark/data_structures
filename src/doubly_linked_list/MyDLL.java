@@ -1,6 +1,7 @@
 package doubly_linked_list;
 
-import java.util.AbstractList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 // TODO: Add JUnit Tests for size() and remove()
 // TODO: Also contains() method should be added.
@@ -12,7 +13,7 @@ import java.util.AbstractList;
  *
  * @param <E> The type of the elements stored in the list
  */
-public class MyDLL<E> extends AbstractList<E> {
+public class MyDLL<E> implements Iterable<E> {
 
   /*
    * Inner Class is accesible by default only in package.
@@ -23,9 +24,9 @@ public class MyDLL<E> extends AbstractList<E> {
    * If access modifer set to private, Both accessible only in Outer Class.
    * 
    */
-  private class LLNode<E> implements Comparable<LLNode<E>> {
-    private LLNode<E> prev;
-    private LLNode<E> next;
+  private class LLNode implements Comparable<LLNode> {
+    private LLNode prev;
+    private LLNode next;
     private E data;
 
     private LLNode(E obj) {
@@ -34,14 +35,15 @@ public class MyDLL<E> extends AbstractList<E> {
       this.next = null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public int compareTo(LLNode<E> other) {
+    public int compareTo(LLNode other) {
       return ((Comparable<E>) this.data).compareTo(other.data);
     }
   }
 
-  private LLNode<E> head;
-  private LLNode<E> tail;
+  private LLNode head;
+  private LLNode tail;
   private int size;
 
   public MyDLL() {
@@ -65,12 +67,12 @@ public class MyDLL<E> extends AbstractList<E> {
    */
   public boolean add(E element) {
     if (head == null) {
-      head = new LLNode<E>(element);
+      head = new LLNode(element);
       tail = head;
       size++;
       return true;
     }
-    tail.next = new LLNode<E>(element);
+    tail.next = new LLNode(element);
     tail.next.prev = tail;
     tail = tail.next;
     size++;
@@ -83,11 +85,11 @@ public class MyDLL<E> extends AbstractList<E> {
 
   public void addFirst(E element) {
     if (head == null) {
-      head = new LLNode<E>(element);
+      head = new LLNode(element);
       tail = head;
       size++;
     }
-    head.prev = new LLNode<E>(element);
+    head.prev = new LLNode(element);
     head.prev.next = head;
     head = head.prev;
     size++;
@@ -103,7 +105,7 @@ public class MyDLL<E> extends AbstractList<E> {
       throw new IndexOutOfBoundsException();
 
     int i = 0;
-    LLNode<E> temp = head;
+    LLNode temp = head;
 
     while (i < index) {
       temp = temp.next;
@@ -125,7 +127,7 @@ public class MyDLL<E> extends AbstractList<E> {
     if (index > size | index < 0)
       throw new IndexOutOfBoundsException();
 
-    LLNode<E> tmp = head;
+    LLNode tmp = head;
     int i = 0;
 
     while (i < index) {
@@ -134,18 +136,18 @@ public class MyDLL<E> extends AbstractList<E> {
     }
 
     if (index == 0 && size == 0) { // LIST IS EMPTY, INDEX ARGUMENT IS ZERO
-      head = new LLNode<E>(element);
+      head = new LLNode(element);
       tail = head;
     } else if (index == size) { // LIST HAS AT LEAST ONE ELEMENT, NODE INSERTED AFTER ALL OF THEM
-      tail.next = new LLNode<E>(element);
+      tail.next = new LLNode(element);
       tail.next.prev = tail;
       tail = tail.next;
     } else if (index == 0 && size > 0) { // LIST HAS AT LEAST ONE ELEMENT, NODE INSERTED AS FIRST
-      tmp.prev = new LLNode<E>(element);
+      tmp.prev = new LLNode(element);
       tmp.prev.next = tmp;
       head = head.prev;
     } else { // ELEMENT CHAINS SHOULD BE REARANGED
-      tmp.prev.next = new LLNode<E>(element);
+      tmp.prev.next = new LLNode(element);
       tmp.prev.next.prev = tmp.prev;
       tmp.prev.next.next = tmp;
       tmp.prev = tmp.prev.next;
@@ -157,6 +159,10 @@ public class MyDLL<E> extends AbstractList<E> {
   /** Return the size of the list */
   public int size() {
     return size;
+  }
+
+  public boolean isEmpty() {
+    return this.size == 0;
   }
 
   /**
@@ -172,7 +178,7 @@ public class MyDLL<E> extends AbstractList<E> {
       throw new IndexOutOfBoundsException();
 
     int i = 0;
-    LLNode<E> temp = head;
+    LLNode temp = head;
 
     while (i < index) {
       temp = temp.next;
@@ -220,7 +226,7 @@ public class MyDLL<E> extends AbstractList<E> {
   public String toString() {
 
     String resStr = "";
-    LLNode<E> tmp = head;
+    LLNode tmp = head;
 
     while (tmp != null) {
       resStr += "data: " + tmp.data + "; prev: " + tmp.prev + "; next: " + tmp.next + "; address: " + tmp + "\n";
@@ -235,7 +241,7 @@ public class MyDLL<E> extends AbstractList<E> {
     if (head == null | head.next == null)
       return;
 
-    LLNode<E> tmp;
+    LLNode tmp;
 
     head = divideAndConquer(head);
     tmp = head;
@@ -245,12 +251,12 @@ public class MyDLL<E> extends AbstractList<E> {
     tail = tmp;
   }
 
-  private LLNode<E> divideAndConquer(LLNode<E> nodes) {
+  private LLNode divideAndConquer(LLNode nodes) {
     if (nodes.next == null)
       return nodes;
 
-    LLNode<E> a = nodes;
-    LLNode<E> b = findMid(a);
+    LLNode a = nodes;
+    LLNode b = findMid(a);
 
     b = b.next;
     b.prev.next = null;
@@ -262,13 +268,13 @@ public class MyDLL<E> extends AbstractList<E> {
     return merge(a, b);
   }
 
-  private LLNode<E> merge(LLNode<E> a, LLNode<E> b) {
+  private LLNode merge(LLNode a, LLNode b) {
     if (a == null)
       return b;
     if (b == null)
       return a;
 
-    LLNode<E> c;
+    LLNode c;
 
     if (a.compareTo(b) < 0) {
       c = a;
@@ -282,10 +288,10 @@ public class MyDLL<E> extends AbstractList<E> {
     return c;
   }
 
-  private LLNode<E> findMid(LLNode<E> nodes) {
+  private LLNode findMid(LLNode nodes) {
 
-    LLNode<E> slow = nodes;
-    LLNode<E> fast = nodes.next;
+    LLNode slow = nodes;
+    LLNode fast = nodes.next;
 
     while (fast != null && fast.next != null) {
       slow = slow.next;
@@ -302,8 +308,8 @@ public class MyDLL<E> extends AbstractList<E> {
     if (head == null | head.next == null)
       return;
 
-    LLNode<E> tmp = tail;
-    LLNode<E> tmp_2 = tail;
+    LLNode tmp = tail;
+    LLNode tmp_2 = tail;
 
     tail = head;
     head = tmp;
@@ -314,5 +320,34 @@ public class MyDLL<E> extends AbstractList<E> {
       tmp.next = tmp_2;
       tmp = tmp.next;
     }
+  }
+
+  private class MyDLLIterator implements Iterator<E> {
+
+    private LLNode source;
+
+    private MyDLLIterator() {
+      this.source = head;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return this.source != null;
+    }
+
+    @Override
+    public E next() {
+      if (!this.hasNext())
+        throw new NoSuchElementException("MyDLL's Iterator has no elements left");
+      LLNode curr = this.source;
+      this.source = this.source.next;
+      return curr.data;
+    }
+
+  }
+
+  @Override
+  public Iterator<E> iterator() {
+    return new MyDLLIterator();
   }
 }

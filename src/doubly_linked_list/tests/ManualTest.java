@@ -2,18 +2,14 @@ package doubly_linked_list.tests;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
 import doubly_linked_list.MyDLL;
 
 public class ManualTest {
-  /**
-   * Manual tests for my MergeSort and Revers MyDLL algorithm.
-   * 
-   * @param args
-   * 
-   */
+
   public static void main(String[] args) {
 
     Random rand = new Random();
@@ -71,6 +67,16 @@ public class ManualTest {
         status = "Failed";
 
       System.out.println("Origin: " + originLL.get(i) + " My: " + myLL.get(i) + " Status: " + status);
+    }
+
+    /* Testing my Iterator */
+    for (Integer el : myLL) {
+      System.out.println(el);
+    }
+
+    Iterator<Integer> iterator = myLL.iterator();
+    while (iterator.hasNext()) {
+      System.out.println(iterator.next());
     }
   }
 }

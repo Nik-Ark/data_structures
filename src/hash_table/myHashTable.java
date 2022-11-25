@@ -4,6 +4,23 @@ import doubly_linked_list.MyDLL;
 
 public class myHashTable<K extends Comparable<? super K>, V> implements myHashTableI<K, V> {
 
+  private class HashElement {
+    private K key;
+    private V value;
+    private int hash;
+
+    private HashElement(K key, V value, int hash) {
+      this.key = key;
+      this.value = value;
+      this.hash = hash;
+    }
+
+    @Override
+    public String toString() {
+      return "[key: " + this.key.toString() + ", value: " + this.value + " ]";
+    }
+  }
+
   // TODO: Consider adding next methods: clear(), keys(), values()
 
   // Predifined Array of Prime numbers for tableSize of hashTable:
@@ -13,14 +30,15 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
   private int tableSize; // Use Prime numbers for better node's distribution. By default 16 in Java API.
   private int size;
   private double loadFactor;
-  private MyDLL<HashElement<K, V>>[] hashTable;
+  private MyDLL<HashElement>[] hashTable;
 
+  @SuppressWarnings("unchecked")
   public myHashTable() {
     this.mod = 0;
     this.tableSize = primes[this.mod];
     this.size = 0;
     this.loadFactor = 0;
-    this.hashTable = new MyDLL[tableSize]; // Unnecessary type casting: (MyDLL<HashElement<K, V>>[])
+    this.hashTable = new MyDLL[tableSize]; // Unnecessary type casting: (MyDLL<HashElement>[])
 
     for (int i = 0; i < this.tableSize; i++) {
       this.hashTable[i] = new MyDLL<>();
@@ -53,8 +71,8 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
     return true;
   }
 
-  private HashElement<K, V> getChainNodeByKey(MyDLL<HashElement<K, V>> chainRoot, K key) {
-    for (HashElement<K, V> element : chainRoot) {
+  private HashElement getChainNodeByKey(MyDLL<HashElement> chainRoot, K key) {
+    for (HashElement element : chainRoot) {
       if (element.key.compareTo(key) == 0)
         return element;
     }
@@ -72,15 +90,15 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
     int hash = getHash(key);
     int index = hash % this.tableSize;
 
-    MyDLL<HashElement<K, V>> chainRoot = this.hashTable[index];
-    HashElement<K, V> node = getChainNodeByKey(chainRoot, key);
+    MyDLL<HashElement> chainRoot = this.hashTable[index];
+    HashElement node = getChainNodeByKey(chainRoot, key);
 
     if (node != null) {
       node.value = value;
       return this;
     }
 
-    chainRoot.addLast(new HashElement<>(key, value, hash));
+    chainRoot.addLast(new HashElement(key, value, hash));
     this.size++;
     this.loadFactor = this.size / this.tableSize;
 
@@ -90,12 +108,12 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
     return this;
   }
 
-  private HashElement<K, V> getNode(K key) {
+  private HashElement getNode(K key) {
     int hash = getHash(key);
     int index = hash % this.tableSize;
 
-    MyDLL<HashElement<K, V>> chainRoot = this.hashTable[index];
-    HashElement<K, V> node = getChainNodeByKey(chainRoot, key);
+    MyDLL<HashElement> chainRoot = this.hashTable[index];
+    HashElement node = getChainNodeByKey(chainRoot, key);
     if (node != null)
       return node;
 
@@ -107,7 +125,7 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
       throw new IllegalArgumentException("Can't accept null as argument");
 
     // java.util implementation:
-    HashElement<K, V> element;
+    HashElement element;
     return (element = getNode(key)) == null ? null : element.value;
   }
 
@@ -134,11 +152,11 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
     int hash = getHash(key);
     int index = hash % this.tableSize;
 
-    MyDLL<HashElement<K, V>> chainRoot = this.hashTable[index];
-    HashElement<K, V> nodeToRemove = null;
+    MyDLL<HashElement> chainRoot = this.hashTable[index];
+    HashElement nodeToRemove = null;
 
     int i = 0;
-    for (HashElement<K, V> chainNode : chainRoot) {
+    for (HashElement chainNode : chainRoot) {
       if (chainNode.key.compareTo(key) == 0) {
         nodeToRemove = chainNode;
         break;
@@ -156,7 +174,7 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
 
   public void drawMe() {
     for (int i = 0; i < this.tableSize; i++) {
-      MyDLL<HashElement<K, V>> chain = this.hashTable[i];
+      MyDLL<HashElement> chain = this.hashTable[i];
       System.out.println("HashTable[" + i + "]:");
 
       /*
@@ -167,29 +185,12 @@ public class myHashTable<K extends Comparable<? super K>, V> implements myHashTa
        * }
        */
 
-      for (HashElement<K, V> node : chain) {
+      for (HashElement node : chain) {
         System.out.print(node);
         System.out.print("; ");
         System.out.print("\n");
       }
       System.out.print("\n");
     }
-  }
-}
-
-class HashElement<K, V> {
-  K key;
-  V value;
-  int hash;
-
-  public HashElement(K key, V value, int hash) {
-    this.key = key;
-    this.value = value;
-    this.hash = hash;
-  }
-
-  @Override
-  public String toString() {
-    return "[key: " + this.key.toString() + ", value: " + this.value + " ]";
   }
 }
